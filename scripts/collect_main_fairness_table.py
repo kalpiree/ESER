@@ -36,10 +36,10 @@ METHOD_LABELS = {
     "group_thr": "Group-Thr.",
     "coverage_set": "Coverage-Set",
     "user_fair": "User-Fair",
-    "item_fair": "FAR",
-    "two_sided_fair": "FairRec-style",
+    "item_fair": "Item-Fair",
+    "two_sided_fair": "Two-Sided-Fair",
     "ltt": "LTT",
-    "eser_s": "ESER-S",
+    "eser_s": "ESER w/o SC",
     "eser": "ESER",
 }
 
@@ -203,42 +203,10 @@ def _write_latex_rows(rows: list[dict[str, Any]], path: Path) -> None:
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
-def _write_references(path: Path) -> None:
-    text = """# Baseline Naming And Citation Notes
-
-## Recommended framing
-
-These rows should be described as **LLM-score post-processing baselines**: every method consumes the same Qwen-generated relevance scores and changes only the selection/calibration policy. This is cleaner than claiming exact reproductions of recent LLM-RS training methods.
-
-## Modern LLM-RS fairness citations to foreground
-
-- User-side LLM-RS fairness: `User-Fair` can be motivated by UP5 / counterfactually fair prompting for fairness-aware LLM recommendation: Hua et al., "UP5: Unbiased Foundation Model for Fairness-aware Recommendation" (2023), arXiv:2305.12090.
-- Consumer fairness evaluation in LLM recommenders: cite Deldjoo and di Noia, "CFaiRLLM: Consumer Fairness Evaluation in Large-Language Model Recommender System" (2024), arXiv:2403.05668.
-- Item/provider-side LLM-RS fairness: `FAR` / item-exposure reranking can be motivated by Jiang et al., "Item-side Fairness of Large Language Model-based Recommendation System" / IFairLRS (2024), arXiv:2402.15215.
-- LLM reranking with fairness/diversity criteria: cite Gao et al., "LLM4Rerank: LLM-based Auto-Reranking Framework for Recommendations" (2024), arXiv:2406.12433.
-- Recent LLM-enhanced fairness training reference: cite Zhang et al., "BiFair: A Fairness-aware Training Framework for LLM-enhanced Recommender Systems via Bi-level Optimization" (2025), arXiv:2507.04294.
-- Recent no-retraining LLM-RS debiasing reference: cite Li et al., "Towards Fair Large Language Model-based Recommender Systems without Costly Retraining" / FUDLR (2026), arXiv:2601.17492.
-
-## Classical objective-lineage citations, only if space allows
-
-- `User-Fair`: Yao and Huang, "Beyond Parity: Fairness Objectives for Collaborative Filtering" (2017), arXiv:1705.08804.
-- `FAR`: Liu and Burke, "Personalizing Fairness-aware Re-ranking" (2018), arXiv:1809.02921; optionally Biega et al., "Equity of Attention" (2018).
-- `FairRec-style`: Patro et al., "FairRec: Two-Sided Fairness for Personalized Recommendations in Two-Sided Platforms" (2020), arXiv:2002.10764, and/or Biswas et al., "Towards Fair Recommendation in Two-Sided Platforms" (2021), arXiv:2201.01180.
-- `LTT`: Angelopoulos et al., "Learn then Test: Calibrating Predictive Algorithms to Achieve Risk Control" (2021), arXiv:2110.01052; optionally pair with "Conformal Risk Control" (2022).
-
-## Suggested manuscript sentence
-
-"Because several recent LLM-RS fairness methods require model retraining or prompt-level intervention, we include comparable post-processing baselines that operate on the same LLM score matrix: user-side fairness calibration (UP5/CFaiRLLM-motivated), item-exposure fairness reranking (IFairLRS/FAR-motivated), two-sided fairness reranking (FairRec-style), and LTT risk-control calibration."
-
-Implementation note: these are lightweight post-processing/reranking baselines inspired by the above lines of work, not exact reproductions of every paper algorithm. Use "motivated by", "style", or "post-processing analogue" unless we implement the full external method.
-"""
-    path.write_text(text, encoding="utf-8")
-
-
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Collect main fairness baseline outputs into paper-ready rows.")
-    parser.add_argument("--outputs-root", default="results/eser_tables", help="Directory containing pulled output folders.")
-    parser.add_argument("--output-dir", default="results/eser_tables", help="Directory for table artifacts.")
+    parser = argparse.ArgumentParser(description="Collect fairness comparison metrics into CSV, Markdown, and LaTeX tables.")
+    parser.add_argument("--outputs-root", default="experiments/recommendation_eser/outputs", help="Directory containing experiment outputs.")
+    parser.add_argument("--output-dir", default="experiments/recommendation_eser/outputs/tables", help="Directory for collected tables.")
     args = parser.parse_args()
 
     outputs_root = Path(args.outputs_root)
@@ -249,7 +217,6 @@ def main() -> None:
     _write_csv(rows, output_dir / "main_fairness_table_rows.csv")
     _write_markdown(rows, output_dir / "main_fairness_table.md")
     _write_latex_rows(rows, output_dir / "main_fairness_table_latex_rows.tex")
-    _write_references(output_dir / "baseline_citation_notes.md")
     print(
         json.dumps(
             {
@@ -257,7 +224,6 @@ def main() -> None:
                 "csv": str(output_dir / "main_fairness_table_rows.csv"),
                 "markdown": str(output_dir / "main_fairness_table.md"),
                 "latex_rows": str(output_dir / "main_fairness_table_latex_rows.tex"),
-                "citation_notes": str(output_dir / "baseline_citation_notes.md"),
             },
             indent=2,
         )

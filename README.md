@@ -1,46 +1,21 @@
-# Beyond Ranking: Risk-Controlled Selective Exposure
+# ESER
 
-This repository contains the ESER experiment code for **Beyond Ranking:
-Risk-Controlled Selective Exposure for LLM-Based Recommenders**.
+Code for **Beyond Ranking: Risk-Controlled Selective Exposure for LLM-Based
+Recommenders**.
 
-ESER is a post-scoring calibration method for recommendation exposure. It does
-not retrain or modify the underlying recommender. Instead, it takes fixed
-user-item relevance scores from an LLM-based or conventional scorer and selects
-the final displayed recommendation set under reliability and fairness
-constraints.
+ESER calibrates group-specific exposure thresholds from fixed recommendation
+scores. It selects displayed items subject to bad-exposure rate (BER),
+missed-opportunity rate (MOR), and exposure-disparity constraints.
 
-## What ESER Controls
+## Repository Structure
 
-ESER calibrates group-specific exposure thresholds to control:
+- `src/recommendation_exposure/`: data processing, scorers, calibration, and metrics.
+- `scripts/`: dataset preparation, LLM scoring, experiments, and result collection.
+- `experiments/recommendation_eser/configs/`: experiment configurations.
+- `experiments/recommendation_eser/data/demo/`: synthetic example data.
+- `docs/reproduce.md`: dataset and experiment instructions.
 
-- `BER`: bad-exposure rate, or the rate at which irrelevant items are displayed;
-- `MOR`: missed-opportunity rate, or the rate at which relevant items are not
-  displayed;
-- `Delta_E`: combined exposure disparity from utility and burden differences.
-
-The paper default is:
-
-```text
-alpha = 0.15
-beta = 0.15
-eta = 0.08
-delta_hat = 0.05
-```
-
-## Repository Layout
-
-```text
-src/recommendation_exposure/        Core data, metrics, scorer, and method code
-scripts/                            Dataset, scoring, experiment, and IHPC helpers
-experiments/recommendation_eser/    Configs and paper-facing experiment notes
-```
-
-Large data, model checkpoints, prompt dumps, score dumps, logs, and generated
-outputs are intentionally not versioned.
-
-## Install
-
-From this directory:
+## Setup
 
 ```bash
 python -m venv .venv
@@ -48,78 +23,61 @@ source .venv/bin/activate
 pip install -e .
 ```
 
-The core calibration code uses the Python standard library. Optional LLM scoring
-requires the model-specific dependencies used on IHPC, such as `torch` and
-`transformers`.
+For LLM scoring and model downloads:
 
-## Quick Demo
+```bash
+pip install torch transformers accelerate huggingface_hub
+```
+
+## Example
 
 ```bash
 python scripts/run_recommendation_experiment.py \
   --config experiments/recommendation_eser/configs/demo_token_overlap.json
 ```
 
-The demo uses a tiny synthetic dataset and a lightweight token-overlap scorer,
-so it is only a plumbing check. Paper runs use prepared benchmark datasets and
-precomputed scorer outputs.
+This example uses synthetic data and token-overlap scores. It writes fitted
+thresholds and evaluation metrics to
+`experiments/recommendation_eser/outputs/demo_token_overlap/`.
 
-## Paper Experiment Setup
-
-The paper-facing setup uses:
-
-- datasets: MovieLens-1M, Amazon Books, LastFM, and Book-Crossing;
-- candidate sets: one held-out positive plus 50 sampled negatives;
-- main scorer: Qwen2.5-3B-Instruct;
-- scorer robustness: Qwen2.5-0.5B, Qwen2.5-1.5B, Qwen2.5-3B, and SASRec;
-- baselines: Top-k, Top-k-Match, Global-Thr., Group-Thr., Coverage-Set,
-  User-Fair, Item-Fair, Two-Sided-Fair, LTT, ESER w/o SC, and ESER.
-
-See `experiments/recommendation_eser/DESIGN.md` for the research-question
-mapping and `experiments/recommendation_eser/PAPER_ALIGNMENT.md` for the local
-result files used by each table or figure.
-
-## LLM Score Replay
-
-The typical LLM workflow is:
+## Prepare Data and Models
 
 ```bash
-python scripts/export_recommendation_prompts.py \
-  --config experiments/recommendation_eser/configs/movielens1m_qwen25_3b_precomputed_50neg.json \
-  --output experiments/recommendation_eser/outputs/movielens1m_prompts.jsonl
+python scripts/download_recommendation_assets.py download-dataset movielens1m
+python scripts/prepare_recommendation_dataset.py --dataset movielens1m
+python scripts/download_recommendation_assets.py download-model qwen25_3b_instruct
 ```
 
-Score the prompts on IHPC, then replay the resulting score JSONL:
+Dataset preparation supports MovieLens-1M, Amazon Books, LastFM-1K, and
+Book-Crossing. Model download configurations are provided for
+Qwen2.5-0.5B-Instruct, Qwen2.5-1.5B-Instruct, and Qwen2.5-3B-Instruct.
+
+## Run Experiments
+
+After generating scores using the [reproduction guide](docs/reproduce.md):
 
 ```bash
 python scripts/run_recommendation_experiment.py \
   --config experiments/recommendation_eser/configs/movielens1m_qwen25_3b_precomputed_50neg.json
 ```
 
-The prompt template excludes group labels. Group information is used only during
-calibration and evaluation of exposure constraints.
+Each configuration specifies the scorer, candidate sampling, group definitions,
+and exposure methods. The main control parameters are `alpha` (BER tolerance),
+`beta` (MOR tolerance), `eta` (disparity tolerance), and `delta_hat` (confidence
+parameter).
 
-## Notes For Release
+## Results
 
-Before publishing, keep only code, configs, documentation, and small demo data.
-Do not include:
+Each run produces:
 
-- `/models/`,
-- `/experiments/recommendation_eser/data/raw/`,
-- `/experiments/recommendation_eser/data/prepared/`,
-- `/experiments/recommendation_eser/outputs/`,
-- `/logs/`,
-- credential files,
-- hand-edited result drafts.
+- `summary.json`: fitted thresholds, group metrics, and constraint checks.
+- `test_metrics.csv`: aggregate test metrics for each method.
 
-## IHPC Notes
-
-For cluster runs, copy `configs/ihpc.env.example` to `configs/ihpc.env` and set
-the remote ESER directory. The local `configs/ihpc.env` file is ignored so
-account-specific paths and host settings are not committed.
-
-Example detached run:
+Collect completed main-comparison runs into CSV, Markdown, and LaTeX tables:
 
 ```bash
-IHPC_EXEC_HOST=dsmi1 bash scripts/ihpc_run_recommendation_experiment_detached.sh \
-  experiments/recommendation_eser/configs/demo_token_overlap.json
+python scripts/collect_main_fairness_table.py
 ```
+
+See the [experiment reference](experiments/recommendation_eser/README.md) for
+configuration fields, dataset groups, and metrics.

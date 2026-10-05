@@ -20,7 +20,7 @@
   },
   "scorer": {
     "kind": "precomputed_jsonl",
-    "scores_path": "../outputs/scores/bookcrossing/qwen25_3b_scores_50neg_dsmi1_dual.jsonl"
+    "scores_path": "../outputs/scores/bookcrossing/qwen25_3b_scores_50neg_multillm.jsonl"
   },
   "methods": [
     {

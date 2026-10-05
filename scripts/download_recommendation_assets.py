@@ -49,7 +49,7 @@ def _path_from_manifest(relative_path: str) -> Path:
 
 def _download_url(url: str, target_path: Path) -> None:
     target_path.parent.mkdir(parents=True, exist_ok=True)
-    request = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 Codex Recommendation Bootstrap"})
+    request = urllib.request.Request(url, headers={"User-Agent": "ESER/0.1"})
     with urllib.request.urlopen(request, timeout=1200) as response, target_path.open("wb") as handle:
         shutil.copyfileobj(response, handle)
 
@@ -72,9 +72,9 @@ def _extract_archive(archive_path: Path, target_dir: Path) -> None:
     target_dir.mkdir(parents=True, exist_ok=True)
     archive_name = archive_path.name.lower()
     if archive_name.endswith(".zip"):
-      with zipfile.ZipFile(archive_path) as handle:
+        with zipfile.ZipFile(archive_path) as handle:
             handle.extractall(target_dir)
-      return
+        return
     if archive_name.endswith(".tar.gz") or archive_name.endswith(".tgz"):
         with tarfile.open(archive_path, "r:gz") as handle:
             handle.extractall(target_dir)

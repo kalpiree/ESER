@@ -12,7 +12,7 @@ from .types import Candidate, ItemRecord, PreparedDataset, UserEvalCase, UserRec
 from .utils import resolve_path, stable_int
 
 
-# Amazon/metadata rows can exceed the default CSV parser field cap on IHPC.
+# Long item descriptions can exceed the default CSV parser field limit.
 csv.field_size_limit(sys.maxsize)
 
 

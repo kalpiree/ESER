@@ -17,11 +17,6 @@ BASE_CONFIGS = {
     "amazon_books": "amazon_books_qwen25_3b_precomputed_50neg.json",
 }
 
-SCORE_PATH_OVERRIDES = {
-    "lastfm1k": "../outputs/scores/lastfm1k/qwen25_3b_scores_50neg_dsmi1_dual.jsonl",
-    "bookcrossing": "../outputs/scores/bookcrossing/qwen25_3b_scores_50neg_dsmi1_dual.jsonl",
-}
-
 
 def _load(dataset: str) -> dict[str, Any]:
     return json.loads((CONFIG_DIR / BASE_CONFIGS[dataset]).read_text(encoding="utf-8"))
@@ -101,8 +96,6 @@ def build_configs() -> list[str]:
         config = copy.deepcopy(base)
         config["name"] = f"rq_mainfair_{dataset}_qwen25_3b_50neg"
         config["data"]["case_seed_name"] = base["name"]
-        if dataset in SCORE_PATH_OVERRIDES:
-            config["scorer"]["scores_path"] = SCORE_PATH_OVERRIDES[dataset]
         config["methods"] = _fair_methods(base)
         path = CONFIG_DIR / f"{config['name']}.json"
         path.write_text(json.dumps(config, indent=2) + "\n", encoding="utf-8")

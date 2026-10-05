@@ -5,6 +5,9 @@ __pycache__/
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
+*.egg-info/
+build/
+dist/
 .venv/
 venv/
 
@@ -28,17 +31,8 @@ experiments/recommendation_eser/outputs/
 *.safetensors
 *.bin
 
-# Local exploratory configs not used by the paper-facing release
-experiments/recommendation_eser/configs/*pilot*
-experiments/recommendation_eser/configs/*advantaged*
-experiments/recommendation_eser/configs/*999neg*
-experiments/recommendation_eser/configs/rq6_*_sensitivity.json
-experiments/recommendation_eser/configs/*_precomputed.json
-experiments/recommendation_eser/configs/demo_token_overlap-scores-*.json
-
 # Credentials and local environment
 .env
-configs/ihpc.env
 *.pem
 *.key
 credentials*

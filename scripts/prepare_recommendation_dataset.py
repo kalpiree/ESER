@@ -44,8 +44,8 @@ def _manifest() -> dict:
 
 def _ensure_dirs(dataset_id: str, prepared_suffix: str = "") -> tuple[Path, Path]:
     manifest = _manifest()["datasets"][dataset_id]
-    raw_dir = (ESER_ROOT.parent / manifest["raw_dir"]).resolve()
-    prepared_dir = (ESER_ROOT.parent / manifest["prepared_dir"]).resolve()
+    raw_dir = (ESER_ROOT / manifest["raw_dir"]).resolve()
+    prepared_dir = (ESER_ROOT / manifest["prepared_dir"]).resolve()
     if prepared_suffix:
         prepared_dir = prepared_dir.with_name(f"{prepared_dir.name}_{prepared_suffix}")
     prepared_dir.mkdir(parents=True, exist_ok=True)
