@@ -1,0 +1,13 @@
+item_id,title,category,description,tags
+i1,Space Battles,science fiction,starship war empire rebellion,space|war|epic
+i2,Galaxy Voyage,science fiction,crew explores deep space anomaly,space|exploration|crew
+i3,Dragon Keep,fantasy,castle magic dragon prophecy,fantasy|magic|dragon
+i4,Forest Spell,fantasy,young mage learns ancient forest magic,fantasy|forest|magic
+i5,City Heat,crime,detective hunts cartel in modern city,crime|detective|thriller
+i6,Night Case,crime,forensic team solves urban murder case,crime|mystery|urban
+i7,Ocean Notes,music,jazz album with piano and sax improvisation,jazz|piano|sax
+i8,Studio Pulse,music,electronic dance album with synth beats,electronic|dance|synth
+i9,Math Journey,education,introductory algebra learning workbook,education|math|learning
+i10,History Lens,education,documentary on ancient empires and trade routes,history|documentary|learning
+i11,Space Academy,science fiction,cadet training mission among the stars,space|academy|stars
+i12,Crime Harbor,crime,smuggler ring investigation near the docks,crime|harbor|investigation

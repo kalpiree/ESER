@@ -1,0 +1,72 @@
+{
+  "datasets": {
+    "movielens1m": {
+      "kind": "url_archive",
+      "url": "https://files.grouplens.org/datasets/movielens/ml-1m.zip",
+      "archive_name": "ml-1m.zip",
+      "extract_dir_name": "ml-1m",
+      "raw_dir": "experiments/recommendation_eser/data/raw/movielens1m",
+      "prepared_dir": "experiments/recommendation_eser/data/prepared/movielens1m"
+    },
+    "amazon_books": {
+      "kind": "url_files",
+      "files": [
+        {
+          "url": "https://jmcauley.ucsd.edu/data/amazon_v2/categoryFilesSmall/Books_5.json.gz",
+          "fallback_urls": [
+            "https://mcauleylab.ucsd.edu/public_datasets/data/amazon_v2/categoryFilesSmall/Books_5.json.gz"
+          ],
+          "name": "Books_5.json.gz"
+        },
+        {
+          "url": "https://jmcauley.ucsd.edu/data/amazon_v2/metaFiles2/meta_Books.json.gz",
+          "fallback_urls": [
+            "https://mcauleylab.ucsd.edu/public_datasets/data/amazon_v2/metaFiles2/meta_Books.json.gz"
+          ],
+          "name": "meta_Books.json.gz"
+        }
+      ],
+      "raw_dir": "experiments/recommendation_eser/data/raw/amazon_books",
+      "prepared_dir": "experiments/recommendation_eser/data/prepared/amazon_books"
+    },
+    "lastfm1k": {
+      "kind": "url_archive",
+      "url": "https://zenodo.org/records/6090214/files/lastfm-dataset-1K.tar.gz?download=1",
+      "archive_name": "lastfm-dataset-1K.tar.gz",
+      "extract_dir_name": "lastfm-dataset-1K",
+      "raw_dir": "experiments/recommendation_eser/data/raw/lastfm1k",
+      "prepared_dir": "experiments/recommendation_eser/data/prepared/lastfm1k"
+    },
+    "bookcrossing": {
+      "kind": "url_archive",
+      "url": "https://files.grouplens.org/datasets/book-crossing/BX-CSV-Dump.zip",
+      "fallback_urls": [
+        "https://github.com/nxs5899/Recommender-System-LightFM/raw/master/BX-CSV-Dump.zip"
+      ],
+      "archive_name": "BX-CSV-Dump.zip",
+      "extract_dir_name": "BX-CSV-Dump",
+      "raw_dir": "experiments/recommendation_eser/data/raw/bookcrossing",
+      "prepared_dir": "experiments/recommendation_eser/data/prepared/bookcrossing"
+    }
+  },
+  "models": {
+    "qwen25_3b_instruct": {
+      "repo_id": "Qwen/Qwen2.5-3B-Instruct",
+      "local_dir": "models/recommendation/qwen25_3b_instruct",
+      "gated": false,
+      "recommended_for": "starter_scoring"
+    },
+    "qwen25_0_5b_instruct": {
+      "repo_id": "Qwen/Qwen2.5-0.5B-Instruct",
+      "local_dir": "models/recommendation/qwen25_0_5b_instruct",
+      "gated": false,
+      "recommended_for": "small_llm_robustness"
+    },
+    "qwen25_1_5b_instruct": {
+      "repo_id": "Qwen/Qwen2.5-1.5B-Instruct",
+      "local_dir": "models/recommendation/qwen25_1_5b_instruct",
+      "gated": false,
+      "recommended_for": "small_llm_robustness"
+    }
+  }
+}

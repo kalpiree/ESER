@@ -1,0 +1,16 @@
+{
+  "configs": [
+    "experiments/recommendation_eser/configs/movielens1m_qwen25_0_5b_precomputed_50neg.json",
+    "experiments/recommendation_eser/configs/movielens1m_qwen25_1_5b_precomputed_50neg.json",
+    "experiments/recommendation_eser/configs/movielens1m_qwen25_3b_precomputed_50neg.json",
+    "experiments/recommendation_eser/configs/lastfm1k_qwen25_0_5b_precomputed_50neg.json",
+    "experiments/recommendation_eser/configs/lastfm1k_qwen25_1_5b_precomputed_50neg.json",
+    "experiments/recommendation_eser/configs/lastfm1k_qwen25_3b_precomputed_50neg.json",
+    "experiments/recommendation_eser/configs/bookcrossing_qwen25_0_5b_precomputed_50neg.json",
+    "experiments/recommendation_eser/configs/bookcrossing_qwen25_1_5b_precomputed_50neg.json",
+    "experiments/recommendation_eser/configs/bookcrossing_qwen25_3b_precomputed_50neg.json",
+    "experiments/recommendation_eser/configs/amazon_books_qwen25_0_5b_precomputed_50neg.json",
+    "experiments/recommendation_eser/configs/amazon_books_qwen25_1_5b_precomputed_50neg.json",
+    "experiments/recommendation_eser/configs/amazon_books_qwen25_3b_precomputed_50neg.json"
+  ]
+}

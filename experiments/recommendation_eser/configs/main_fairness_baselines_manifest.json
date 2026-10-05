@@ -1,0 +1,8 @@
+{
+  "configs": [
+    "experiments/recommendation_eser/configs/rq_mainfair_movielens1m_qwen25_3b_50neg.json",
+    "experiments/recommendation_eser/configs/rq_mainfair_lastfm1k_qwen25_3b_50neg.json",
+    "experiments/recommendation_eser/configs/rq_mainfair_bookcrossing_qwen25_3b_50neg.json",
+    "experiments/recommendation_eser/configs/rq_mainfair_amazon_books_qwen25_3b_50neg.json"
+  ]
+}

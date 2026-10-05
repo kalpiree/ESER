@@ -1,0 +1,11 @@
+{
+  "configs": [
+    "experiments/recommendation_eser/configs/rq_motivation_movielens1m_popularity_50neg.json",
+    "experiments/recommendation_eser/configs/rq_motivation_movielens1m_bpr_mf_50neg.json",
+    "experiments/recommendation_eser/configs/rq_motivation_movielens1m_neumf_50neg.json",
+    "experiments/recommendation_eser/configs/rq_motivation_movielens1m_sasrec_lite_50neg.json",
+    "experiments/recommendation_eser/configs/rq_motivation_movielens1m_qwen25_0_5b_50neg.json",
+    "experiments/recommendation_eser/configs/rq_motivation_movielens1m_qwen25_1_5b_50neg.json",
+    "experiments/recommendation_eser/configs/rq_motivation_movielens1m_qwen25_3b_50neg.json"
+  ]
+}

@@ -1,0 +1,139 @@
+{
+  "name": "rq_motivation_movielens1m_qwen25_0_5b_50neg",
+  "normalize_scores": true,
+  "data": {
+    "users_path": "../data/prepared/movielens1m/users.csv",
+    "items_path": "../data/prepared/movielens1m/items.csv",
+    "interactions_path": "../data/prepared/movielens1m/interactions.csv",
+    "group_column": "gender_group",
+    "secondary_group_column": "activity_group",
+    "timestamp_column": "timestamp",
+    "min_history": 5,
+    "max_eval_users": 2450,
+    "case_seed_name": "movielens1m_qwen25_0_5b_precomputed_50neg"
+  },
+  "split": {
+    "calibration_positive_count": 1,
+    "test_positive_count": 1,
+    "negative_sample_size": 50,
+    "seed": 17
+  },
+  "scorer": {
+    "kind": "precomputed_jsonl",
+    "scores_path": "../outputs/scores/movielens1m/qwen25_0_5b_scores_50neg_multillm.jsonl"
+  },
+  "methods": [
+    {
+      "name": "topk",
+      "kind": "top_k",
+      "k": 10,
+      "omega": 1.0,
+      "utility_metric": "ndcg"
+    },
+    {
+      "name": "global_thr",
+      "kind": "global_threshold",
+      "alpha": 0.15,
+      "beta": 0.15,
+      "omega": 1.0,
+      "utility_metric": "ndcg",
+      "max_thresholds_global": 96
+    },
+    {
+      "name": "group_thr",
+      "kind": "group_threshold",
+      "alpha": 0.15,
+      "beta": 0.15,
+      "omega": 1.0,
+      "utility_metric": "ndcg",
+      "max_thresholds_per_group": 48
+    },
+    {
+      "name": "coverage_set",
+      "kind": "coverage_set",
+      "beta": 0.15,
+      "omega": 1.0,
+      "utility_metric": "ndcg",
+      "max_thresholds_per_group": 48
+    },
+    {
+      "name": "user_fair",
+      "kind": "user_fair",
+      "alpha": 0.15,
+      "beta": 0.15,
+      "eta": 0.08,
+      "omega": 1.0,
+      "utility_metric": "ndcg",
+      "max_thresholds_per_group": 48,
+      "size_penalty": 0.01
+    },
+    {
+      "name": "far",
+      "kind": "item_fair",
+      "alpha": 0.15,
+      "beta": 0.15,
+      "eta": 0.08,
+      "omega": 1.0,
+      "utility_metric": "ndcg",
+      "top_k_grid": [
+        5,
+        10,
+        15,
+        20,
+        30
+      ],
+      "item_penalty_grid": [
+        0.0,
+        0.25,
+        0.5,
+        1.0,
+        2.0
+      ],
+      "utility_penalty": 0.5
+    },
+    {
+      "name": "fairrec_style",
+      "kind": "two_sided_fair",
+      "alpha": 0.15,
+      "beta": 0.15,
+      "eta": 0.08,
+      "omega": 1.0,
+      "utility_metric": "ndcg",
+      "top_k_grid": [
+        5,
+        10,
+        15,
+        20,
+        30
+      ],
+      "item_penalty_grid": [
+        0.0,
+        0.25,
+        0.5,
+        1.0,
+        2.0
+      ],
+      "utility_penalty": 0.5
+    },
+    {
+      "name": "ltt",
+      "kind": "ltt",
+      "alpha": 0.15,
+      "beta": 0.15,
+      "eta": 0.08,
+      "omega": 1.0,
+      "utility_metric": "ndcg",
+      "lambda_grid": [
+        -1.0,
+        -0.5,
+        0.0,
+        0.5,
+        1.0,
+        1.5,
+        2.0
+      ],
+      "min_items": 1,
+      "size_penalty": 0.01
+    }
+  ]
+}

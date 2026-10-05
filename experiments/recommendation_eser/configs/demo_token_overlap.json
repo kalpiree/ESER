@@ -1,0 +1,88 @@
+{
+  "name": "demo_token_overlap",
+  "normalize_scores": true,
+  "data": {
+    "users_path": "../data/demo/users.csv",
+    "items_path": "../data/demo/items.csv",
+    "interactions_path": "../data/demo/interactions.csv",
+    "group_column": "group",
+    "secondary_group_column": "activity_group",
+    "timestamp_column": "timestamp",
+    "min_history": 3
+  },
+  "split": {
+    "calibration_positive_count": 1,
+    "test_positive_count": 1,
+    "negative_sample_size": 5,
+    "seed": 17
+  },
+  "scorer": {
+    "kind": "token_overlap"
+  },
+  "methods": [
+    {
+      "name": "eser",
+      "kind": "eser",
+      "alpha": 0.25,
+      "beta": 0.25,
+      "eta": 0.75,
+      "delta_hat": 0.05,
+      "omega": 0.25,
+      "utility_metric": "hit_rate",
+      "max_thresholds_per_group": 32,
+      "stability_mode": "user_leave_one_out"
+    },
+    {
+      "name": "eser_s",
+      "kind": "eser",
+      "alpha": 0.25,
+      "beta": 0.25,
+      "eta": 0.75,
+      "delta_hat": 0.05,
+      "omega": 0.25,
+      "utility_metric": "hit_rate",
+      "max_thresholds_per_group": 32,
+      "stability_mode": "none"
+    },
+    {
+      "name": "group_thr",
+      "kind": "group_threshold",
+      "alpha": 0.25,
+      "beta": 0.25,
+      "omega": 0.25,
+      "utility_metric": "hit_rate",
+      "max_thresholds_per_group": 32
+    },
+    {
+      "name": "global_thr",
+      "kind": "global_threshold",
+      "alpha": 0.25,
+      "beta": 0.25,
+      "omega": 0.25,
+      "utility_metric": "hit_rate",
+      "max_thresholds_global": 64
+    },
+    {
+      "name": "coverage_set",
+      "kind": "coverage_set",
+      "beta": 0.25,
+      "omega": 0.25,
+      "utility_metric": "hit_rate",
+      "max_thresholds_per_group": 32
+    },
+    {
+      "name": "topk",
+      "kind": "top_k",
+      "k": 3,
+      "omega": 0.25,
+      "utility_metric": "hit_rate"
+    },
+    {
+      "name": "topk_matched_eser",
+      "kind": "top_k_matched",
+      "match_to": "eser",
+      "omega": 0.25,
+      "utility_metric": "hit_rate"
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+
+# OS/editor
+.DS_Store
+.idea/
+.vscode/
+
+# Local data and generated artifacts
+models/
+logs/
+results/
+experiments/recommendation_eser/data/raw/
+experiments/recommendation_eser/data/prepared/
+experiments/recommendation_eser/outputs/
+
+# Large scorer artifacts
+*.jsonl
+*.pt
+*.pth
+*.safetensors
+*.bin
+
+# Local exploratory configs not used by the paper-facing release
+experiments/recommendation_eser/configs/*pilot*
+experiments/recommendation_eser/configs/*advantaged*
+experiments/recommendation_eser/configs/*999neg*
+experiments/recommendation_eser/configs/rq6_*_sensitivity.json
+experiments/recommendation_eser/configs/*_precomputed.json
+experiments/recommendation_eser/configs/demo_token_overlap-scores-*.json
+
+# Credentials and local environment
+.env
+configs/ihpc.env
+*.pem
+*.key
+credentials*
+secrets*

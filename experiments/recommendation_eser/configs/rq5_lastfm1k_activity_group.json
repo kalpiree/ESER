@@ -1,0 +1,93 @@
+{
+  "name": "rq5_lastfm1k_activity_group",
+  "normalize_scores": true,
+  "data": {
+    "users_path": "../data/prepared/lastfm1k/users.csv",
+    "items_path": "../data/prepared/lastfm1k/items.csv",
+    "interactions_path": "../data/prepared/lastfm1k/interactions.csv",
+    "group_column": "activity_group",
+    "secondary_group_column": "activity_group",
+    "timestamp_column": "timestamp",
+    "min_history": 5,
+    "group_value_map": {
+      "high": "high",
+      "medium": "not_high",
+      "low": "not_high"
+    }
+  },
+  "split": {
+    "calibration_positive_count": 1,
+    "test_positive_count": 1,
+    "negative_sample_size": 50,
+    "seed": 17
+  },
+  "scorer": {
+    "kind": "token_overlap"
+  },
+  "methods": [
+    {
+      "name": "eser",
+      "kind": "eser",
+      "alpha": 0.15,
+      "beta": 0.15,
+      "eta": 0.08,
+      "delta_hat": 0.05,
+      "omega": 1.0,
+      "utility_metric": "ndcg",
+      "max_thresholds_per_group": 64,
+      "stability_mode": "user_leave_one_out"
+    },
+    {
+      "name": "eser_s",
+      "kind": "eser",
+      "alpha": 0.15,
+      "beta": 0.15,
+      "eta": 0.08,
+      "delta_hat": 0.05,
+      "omega": 1.0,
+      "utility_metric": "ndcg",
+      "max_thresholds_per_group": 64,
+      "stability_mode": "none"
+    },
+    {
+      "name": "group_thr",
+      "kind": "group_threshold",
+      "alpha": 0.15,
+      "beta": 0.15,
+      "omega": 1.0,
+      "utility_metric": "ndcg",
+      "max_thresholds_per_group": 64
+    },
+    {
+      "name": "global_thr",
+      "kind": "global_threshold",
+      "alpha": 0.15,
+      "beta": 0.15,
+      "omega": 1.0,
+      "utility_metric": "ndcg",
+      "max_thresholds_global": 128
+    },
+    {
+      "name": "coverage_set",
+      "kind": "coverage_set",
+      "beta": 0.15,
+      "omega": 1.0,
+      "utility_metric": "ndcg",
+      "max_thresholds_per_group": 64
+    },
+    {
+      "name": "topk",
+      "kind": "top_k",
+      "k": 10,
+      "omega": 1.0,
+      "utility_metric": "ndcg"
+    },
+    {
+      "name": "topk_matched_eser",
+      "kind": "top_k_matched",
+      "match_to": "eser",
+      "omega": 1.0,
+      "utility_metric": "ndcg"
+    }
+  ]
+}
